@@ -1,8 +1,5 @@
-package com.cncounter.cncounter.mvc.controller.base;
+package com.cncounter.common.web;
 
-
-import com.cncounter.cncounter.dao.redis.api.RedisBaseDAO;
-import com.cncounter.cncounter.model.user.User;
 import com.cncounter.util.string.StringNumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,43 +20,6 @@ public abstract class ControllerBase {
 	 */
 	public static final String SESSION_USER_KEY = "session_user_key";
 	public static final String UTF_8 = "UTF-8";
-
-	@Autowired
-	private RedisBaseDAO redisBaseDAO;
-
-	/**
-	 * 获取基于sessionid的key
-	 * @param request
-	 * @param oKey
-	 * @return
-	 */
-	public static String getSessionKey(HttpServletRequest request, String oKey){
-		// 获取会话?
-		HttpSession session = request.getSession(true);
-		// 获取会话ID
-		String sessionid = session.getId();
-		//
-		String nKey = "sessionid:"+ sessionid +":"+oKey;
-		//
-		return nKey;
-	}
-	/**
-	 * 获取UUID的key
-	 * @param uuid
-	 * @return
-	 */
-	public static String getUUIDKey(String uuid){
-		String nKey = "uuid:"+uuid;
-		return nKey;
-	}
-	/**
-	 * 获取UUID
-	 * @return
-	 */
-	public static String getUUID(){
-		String uuid = UUID.randomUUID().toString();
-		return uuid;
-	}
 	
 	/**
 	 * 设置session属性
@@ -95,114 +55,6 @@ public abstract class ControllerBase {
 		// 当前是基于单容器的实现
 		HttpSession session = request.getSession(true);
 		return session.getAttribute(name);
-	}
-	
-
-	/**
-	 * 保存到缓存. 使用Redis实现
-	 * @param request 使用是为了使用app缓存的方式
-	 * @param name
-	 * @param value
-	 */
-	public void saveToCache(HttpServletRequest request, String name, Serializable value) {
-		// 基于单容器的实现
-		// ServletContext application = request.getSession().getServletContext();
-		// application.setAttribute(name, value);
-		// 基于Redis的实现
-		saveToCache(name, value);
-	}
-	public void saveToCache(String name, Serializable value) {
-		// 基于单容器的实现
-		// ServletContext application = request.getSession().getServletContext();
-		// application.setAttribute(name, value);
-		// 基于Redis的实现
-		redisBaseDAO.saveObject(name, value);
-	}
-	/**
-	 * 从Cache获取对象
-	 * @param request 使用是为了使用app缓存的方式
-	 * @param name
-	 * @return
-	 */
-	public  Object getFromCache(HttpServletRequest request, String name) {
-		// 基于单容器的实现
-		// ServletContext application = request.getSession().getServletContext();
-		// return application.getAttribute(name);
-		// 基于Redis的实现
-		return getFromCache(name);
-	}
-	public  Object getFromCache(String name) {
-		// 基于单容器的实现
-		// ServletContext application = request.getSession().getServletContext();
-		// return application.getAttribute(name);
-		// 基于Redis的实现
-		return redisBaseDAO.getObject(name);
-	}
-	/**
-	 * 获取当前登录的用户
-	 * @param request
-	 * @return
-	 */
-	public  User getLoginUser(HttpServletRequest request) {
-		User user = null;
-		Object obj = getSessionAttribute(request, SESSION_USER_KEY);
-		if(obj instanceof User){
-			user = (User)obj;
-		}
-		return user;
-	}
-	
-	/**
-	 * 在线用户; 弱引用,不影响Session的回收; 
-	 */
-	private static WeakHashMap<HttpSession, User> onlineUsers = new WeakHashMap<HttpSession, User>(100);
-	/**
-	 * 获取在线用户数量
-	 * @return
-	 */
-	public static int getOnlineUserCount(){
-		if(null != onlineUsers){
-			int count = onlineUsers.entrySet().size();
-			if(count < 1){
-				count = 1;
-			}
-			return count;
-		} else {
-			return 1;
-		}
-	}
-	/**
-	 * 添加在线用户,主要由 LoginController使用.
-	 * @param request
-	 * @param user
-	 */
-	protected static void addOnlineUser(HttpServletRequest request, User user) {
-		if(null == request || null == user){
-			return;
-		}
-		//
-		if(null != onlineUsers){
-			//
-			HttpSession session = request.getSession(true);
-			// 添加
-			onlineUsers.put(session, user);
-		}
-	}
-	/**
-	 * 删除在线用户
-	 * @param request
-	 */
-	protected static void removeOnlineUser(HttpServletRequest request) {
-		if(null == request){
-			return;
-		}
-		//
-		if(null != onlineUsers){
-			//
-			HttpSession session = request.getSession(true);
-			// 添加
-			onlineUsers.remove(session);
-		}
 	}
 	
 	/**

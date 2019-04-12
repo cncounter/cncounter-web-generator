@@ -2,7 +2,7 @@
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>
 <#assign shortName = table.shortName>
-package ${basepackage}.service.api.${subpackage};
+package ${basepackage}.service;
 
 import java.util.List;
 import java.util.Map;

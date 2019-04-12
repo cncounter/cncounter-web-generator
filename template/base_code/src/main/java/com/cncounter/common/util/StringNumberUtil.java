@@ -1,4 +1,4 @@
-package com.cncounter.util.string;
+package com.cncounter.common.util;
 
 import java.util.UUID;
 

@@ -1,12 +1,11 @@
 /*
  * 文 件 名:  ${table.className}ServiceImpl.java
  * 创 建 人:  
- * 创建时间:  <#if now??>${now?string('yyyy-MM-dd')}</#if>
  */
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>
 <#assign shortName = table.shortName>
-package ${basepackage}.service.impl.${subpackage};
+package ${basepackage}.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import ${basepackage}.service.api.${subpackage}.${className}Service;
+import ${basepackage}.service.${className}Service;
 import ${basepackage}.model.${className};
 import ${basepackage}.dao.mysql.${className}Mapper;
 

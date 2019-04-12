@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cncounter.util.string.StringNumberUtil;
-import com.cncounter.cncounter.mvc.msg.JSONMessage;
-import com.cncounter.cncounter.mvc.controller.base.ControllerBase;
+import com.cncounter.common.util.StringNumberUtil;
+import com.cncounter.common.vo.JSONMessage;
+import com.cncounter.common.web.ControllerBase;
 import ${basepackage}.model.${className};
-import ${basepackage}.service.api.${subpackage}.${className}Service;
+import ${basepackage}.service.${className}Service;
 
 /**
  * @version 1.0

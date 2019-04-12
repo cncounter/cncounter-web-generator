@@ -1,7 +1,5 @@
 /*
  * 文 件 名:  ${table.className}Mapper.java
- * 创 建 人:  tangqian
- * 创建时间:  <#if now??>${now?string('yyyy-MM-dd')}</#if>
  */
 <#assign className = table.className>   
 <#assign classNameLower = className?uncap_first>
