@@ -32,84 +32,90 @@ public class ${className}Controller extends ControllerBase {
     @Resource
     private ${className}Service ${classNameLower}Service;
     
-	@RequestMapping(value = "/list.json")
-	@ResponseBody
-	public JSONMessage list(HttpServletRequest request) {
-		// get params
-		Map<String, Object> params = parseParamMapObject(request);
-		//
-		Integer count = ${classNameLower}Service.countBy(params);
-		List<${className}> ${classNameLower}List = ${classNameLower}Service.listPage(params);
-		//
-		JSONMessage jsonMessage = JSONMessage.successMessage();
-		jsonMessage.setTotal(count);
-		jsonMessage.setData(${classNameLower}List);
+    @RequestMapping(value = "/list.json")
+    @ResponseBody
+    public JSONMessage<${className}> list(HttpServletRequest request) {
+        // get params
+        Map<String, Object> params = parseParamMapObject(request);
+        //
+        Integer count = ${classNameLower}Service.countBy(params);
+        List<${className}> ${classNameLower}List = ${classNameLower}Service.listPage(params);
+        //
+        JSONMessage<${className}> jsonMessage = JSONMessage.success();
+        jsonMessage.setTotal(count).setMessage("获取成功");
+        jsonMessage.setData(${classNameLower}List);
 
-		return jsonMessage;
-	}
+        return jsonMessage;
+    }
 
-	@RequestMapping(value = "/add.json", method = RequestMethod.POST)
-	@ResponseBody
-	public JSONMessage doAdd(HttpServletRequest request) {
-		// get params
-		Map<String, Object> params = parseParamMapObject(request);
-		//
-		${className} ${classNameLower} = new ${className}();
-		//
-		BeanUtils.copyProperties(params, ${classNameLower});
-		//
-		Integer rows = ${classNameLower}Service.add(${classNameLower});
+    @RequestMapping(value = "/add.json", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONMessage<${className}> doAdd(HttpServletRequest request) {
+        // get params
+        Map<String, Object> params = parseParamMapObject(request);
+        //
+        ${className} ${classNameLower} = new ${className}();
+        //
+        BeanUtils.copyProperties(params, ${classNameLower});
+        //
+        Integer rows = ${classNameLower}Service.add(${classNameLower});
 
-		//
-		JSONMessage jsonMessage = JSONMessage.successMessage();
-		if(rows < 1){
-			jsonMessage = JSONMessage.failureMessage();
-		}
-		return jsonMessage;
-	}
-	
+        //
+        JSONMessage<${className}> jsonMessage = JSONMessage.success();
+        if(rows < 1){
+            jsonMessage = JSONMessage.failure().setMessage("操作失败");
+        } else {
+            ${className} data = ${classNameLower}Service.getById(${classNameLower}.getId());
+            jsonMessage.setData(data);
+        }
+        return jsonMessage;
+    }
+    
 
-	@RequestMapping(value = "/edit.json", method = RequestMethod.POST)
-	@ResponseBody
-	public JSONMessage doEdit(HttpServletRequest request) {
-		// get params
-		Map<String, Object> params = parseParamMapObject(request);
-		//
-		${className} ${classNameLower} = new ${className}();
-		//
-		BeanUtils.copyProperties(params, ${classNameLower});
-		//
-		Integer rows = ${classNameLower}Service.update(${classNameLower});
+    @RequestMapping(value = "/edit.json", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONMessage<${className}> doEdit(HttpServletRequest request) {
+        // get params
+        Map<String, Object> params = parseParamMapObject(request);
+        //
+        ${className} ${classNameLower} = new ${className}();
+        //
+        BeanUtils.copyProperties(params, ${classNameLower});
+        //
+        Integer rows = ${classNameLower}Service.update(${classNameLower});
 
-		//
-		JSONMessage jsonMessage = JSONMessage.successMessage();
-		if(rows < 1){
-			jsonMessage = JSONMessage.failureMessage();
-		}
-		return jsonMessage;
-	}
-	
+        //
+        JSONMessage<${className}> jsonMessage = JSONMessage.success();
+        if(rows < 1){
+            jsonMessage = JSONMessage.failure().setMessage("操作失败");
+        } else {
+            ${className} data = ${classNameLower}Service.getById(${classNameLower}.getId());
+            jsonMessage.setData(data);
+        }
+        return jsonMessage;
+    }
+    
 
-	@RequestMapping(value = "/delete.json", method = RequestMethod.POST)
-	@ResponseBody
-	public JSONMessage delete(HttpServletRequest request) {
-		// get params
-		Map<String, Object> params = parseParamMapObject(request);
-		//
-		Integer id = 0;
-		Object _id = params.get("id");
-		if(null != _id && StringNumberUtil.isLong(_id.toString())){
-			id = StringNumberUtil.parseInt(_id.toString(), 0);
-		}
-		//
-		Integer rows = ${classNameLower}Service.delete(id);
+    @RequestMapping(value = "/delete.json", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONMessage delete(HttpServletRequest request) {
+        // get params
+        Map<String, Object> params = parseParamMapObject(request);
+        //
+        Integer id = 0;
+        Object _id = params.get("id");
+        if(null != _id && StringNumberUtil.isLong(_id.toString())){
+            id = StringNumberUtil.parseInt(_id.toString(), 0);
+        }
+        //
+        Integer rows = ${classNameLower}Service.delete(id);
 
-		//
-		JSONMessage jsonMessage = JSONMessage.successMessage();
-		if(rows < 1){
-			jsonMessage = JSONMessage.failureMessage();
-		}
-		return jsonMessage;
-	}
+        //
+        JSONMessage jsonMessage = JSONMessage.success();
+        if(rows < 1){
+            jsonMessage = JSONMessage.failure().setMessage("操作失败");
+        }
+        return jsonMessage;
+    }
 
 }

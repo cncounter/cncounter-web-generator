@@ -15,17 +15,17 @@ import ${basepackage}.model.${className};
  * @author 
  */
 public interface ${className}Service {
-	
-	public int add(${className} ${classNameLower});
-
-	public int update(${className} ${classNameLower});
     
-	public int delete(Integer id);
+    public int add(${className} ${classNameLower});
 
-	public ${className} getById(Integer id);
+    public int update(${className} ${classNameLower});
+    
+    public int delete(Integer id);
 
-	public Integer countBy(Map<String, Object> params);
+    public ${className} getById(Integer id);
 
-	public List<${className}> listPage(Map<String, Object> params);
+    public Integer countBy(Map<String, Object> params);
+
+    public List<${className}> listPage(Map<String, Object> params);
 
 }
